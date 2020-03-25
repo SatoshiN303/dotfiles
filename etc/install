@@ -1,0 +1,44 @@
+# Set DOTPATH as default variable
+if [ -z "${DOTPATH:-}" ]; then
+    DOTPATH=~/.dotfiles; export DOTPATH
+fi
+
+
+DOTFILES_GITHUB="https://github.com/SatoshiN303/dotfiles.git"; export DOTFILES_GITHUB
+
+download() {
+	
+}
+
+install() {
+	
+}
+
+initialize() {
+	
+}
+
+deploy() {
+	
+}
+
+
+log_pass() {
+    logging SUCCESS "$1"
+}
+
+log_fail() {
+    logging ERROR "$1" 1>&2
+}
+
+log_fail() {
+    logging WARN "$1"
+}
+
+log_info() {
+    logging INFO "$1"
+}
+
+log_echo() {
+    logging TITLE "$1"
+}
