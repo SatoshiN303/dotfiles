@@ -15,8 +15,8 @@ download() {
         exit 1
     fi
 
-    printf "\n"
-    printf "Downloading dotfiles..."
+    newline
+    print_header "Now Downloading..."
 
     # git があれば git使って落とす
     if is_exists "git"; then
@@ -47,16 +47,14 @@ download() {
     fi
 }
 
-install() {
-	
-}
-
 initialize() {
-	
+	newline
+    print_header "Now Initializing..."
 }
 
 deploy() {
-	
+    newline
+    print_header "Now Deploying..."	
 }
 
 is_exists() {
@@ -82,4 +80,12 @@ log_info() {
 
 log_echo() {
     logging TITLE "$1"
+}
+
+newline() {
+    printf "\n"
+}
+
+print_header() {
+    printf " \033[37;1m%s\033[m\n" "$*"
 }
