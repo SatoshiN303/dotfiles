@@ -1,3 +1,6 @@
+#!/bin/bash
+#     
+
 # Set DOTPATH as default variable
 if [ -z "${DOTPATH:-}" ]; then
     DOTPATH=~/.dotfiles; export DOTPATH
@@ -7,7 +10,41 @@ fi
 DOTFILES_GITHUB="https://github.com/SatoshiN303/dotfiles.git"; export DOTFILES_GITHUB
 
 download() {
-	
+    if [ -d "$DOTPATH" ]; then
+        log_fail "$DOTPATH: already exists" 
+        exit 1
+    fi
+
+    printf "\n"
+    printf "Downloading dotfiles..."
+
+    # git があれば git使って落とす
+    if is_exists "git"; then
+        git clone --recursive "$DOTFILES_GITHUB" "$DOTPATH"
+
+    elif is_exists "curl" || is_exists "wget"; then
+        local tarball = "https://github.com/SatoshiN303/dotfiles/archive/master.tar.gz"
+
+        # curl or wgetでダウンロード，tar に渡す
+        if is_exists "curl"; then
+            curl -L "$tarball"
+
+        elif is_exists "wget"; then
+            wget -O - "$tarball"
+
+        fi | tar xvz 
+
+        # 解凍してDOTPATHに置く
+        if [ ! -d dotfiles-master ]; then
+            log_fail "dotfiles-master not found"
+            exit 1
+        fi
+        mv -f dotfiles-master "$DOTPATH"
+
+    else
+        log_fail "required git or curl or wget"
+        exit 1
+    fi
 }
 
 install() {
@@ -22,6 +59,10 @@ deploy() {
 	
 }
 
+is_exists() {
+    which "$1" >/dev/null 2>&1
+    return $?
+}
 
 log_pass() {
     logging SUCCESS "$1"
