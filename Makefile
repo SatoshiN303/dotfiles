@@ -1,0 +1,1 @@
+EXCLUSIONS := .DS_Store .git .gitmodules .travis.yml .swiftlint.yml .gitlab-ci.yml
