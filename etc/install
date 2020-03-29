@@ -48,8 +48,20 @@ download() {
 }
 
 initialize() {
-	newline
+    if [ "$1" != "init" ]; then
+        log_fail "required init argument"
+        exit 1
+    fi
+	
+    newline
     print_header "Now Initializing..."
+
+    if [ -f Makefile]; then
+        make install
+    else
+         log_fail "Makefile: not found"
+         exit 1
+    fi
 }
 
 deploy() {

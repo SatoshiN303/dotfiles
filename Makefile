@@ -12,7 +12,13 @@ info:
 	@echo ''
 	@echo MAKECMDGOALS: $(MAKECMDGOALS)
 	@echo ''
+	@echo .DOTPATH: "$(DOTPATH)"
+	@echo ''
 	@echo .VARIABLES: "$(.VARIABLES)"
+
 
 list: ## Show dot files in this repo
 	@echo $(DOTFILES)
+
+install:
+	@echo "make install"  
