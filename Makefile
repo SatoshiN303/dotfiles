@@ -4,21 +4,20 @@ DOTFILES   := $(filter-out $(EXCLUSIONS), $(CANDIDATES))
 DOTPATH    := $(realpath $(dir $(lastword $(MAKEFILE_LIST))))
 
 info:
-	@echo MAKE_VERSION: $(MAKE_VERSION)
-	@echo ''
-	@echo CURDIR: $(CURDIR)
-	@echo ''
-	@echo MAKEFILE_LIST: $(MAKEFILE_LIST)
-	@echo ''
-	@echo MAKECMDGOALS: $(MAKECMDGOALS)
-	@echo ''
 	@echo .DOTPATH: "$(DOTPATH)"
 	@echo ''
-	@echo .VARIABLES: "$(.VARIABLES)"
+	@echo .DOTFILES: "$(DOTFILES)"
+	@echo ''
 
-
-list: ## Show dot files in this repo
-	@echo $(DOTFILES)
+list:
+	@echo "Show dotfiles"
+	@echo '' 
+	@$(foreach val, $(DOTFILES), echo $(val);)
 
 install:
-	@echo "make install"  
+	@echo "Create Symlink" 
+	@$(foreach val, $(DOTFILES), ln -sfnv $(abspath $(val)) $(HOME)/$(val);) 
+
+clean:
+	@echo "Unlink dotfiles"
+	@$(foreach val, $(DOTFILES), unlink $(HOME)/$(val);) 
