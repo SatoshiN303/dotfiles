@@ -9,6 +9,17 @@ fi
 
 DOTFILES_GITHUB="https://github.com/SatoshiN303/dotfiles.git"; export DOTFILES_GITHUB
 
+install() {
+    # 1. Download repos
+    download && 
+
+    # 2. Deploy dotfiles to home dir
+    deploy && 
+
+    # 3. all sh files within etc/init/
+    initialize "$@"
+}
+
 download() {
     if [ -d "$DOTPATH" ]; then
         log_fail "$DOTPATH: already exists" 
@@ -45,6 +56,20 @@ download() {
         log_fail "required git or curl or wget"
         exit 1
     fi
+    newline && finish "Download"
+}
+
+deploy() {
+    newline
+    print_header "Now Deploying..." 
+
+    if [ -f Makefile]; then
+        make deploy
+    else
+         log_fail "Makefile: not found"
+         exit 1
+    fi
+    newline && finish "Deploy"
 }
 
 initialize() {
@@ -57,17 +82,15 @@ initialize() {
     print_header "Now Initializing..."
 
     if [ -f Makefile]; then
-        make install
+        make init
     else
          log_fail "Makefile: not found"
          exit 1
     fi
+    newline && finish "Initialize"
 }
 
-deploy() {
-    newline
-    print_header "Now Deploying..."	
-}
+
 
 is_exists() {
     which "$1" >/dev/null 2>&1
@@ -96,6 +119,10 @@ log_echo() {
 
 newline() {
     printf "\n"
+}
+
+finish() {
+    printf " \033[37;1m%s\033[m...\033[32mOK\033[m\n" "✔ $*"
 }
 
 print_header() {
